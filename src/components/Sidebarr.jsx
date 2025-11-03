@@ -3,7 +3,7 @@ import { Home, Library, Search, Menu, X, PlusCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 // import { useAppContext } from "../context/AppContext.jsx";
 
-const Sidebar = () => {
+const Sidebarr = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 //   const { currentSong } = useAppContext();
@@ -122,4 +122,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Sidebarr;

@@ -9,7 +9,7 @@ import { Menu, X, Search as SearchIcon, Play, Pause } from "lucide-react";
 export default function Home() {
   const navigate = useNavigate();
 
-//   const { user, isAuthenticated } = useSelector((state) => state.auth);
+
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileSearch, setMobileSearch] = useState("");
@@ -98,7 +98,7 @@ user = user ? JSON.parse(user) : null;
       {/* Desktop Navigation */}
       <div className="hidden sm:flex items-center gap-4">
         <Link
-          to={`/`}
+          to={`/home`}
           className="text-sm text-gray-300 hover:text-green-400 transition"
         >
           Home

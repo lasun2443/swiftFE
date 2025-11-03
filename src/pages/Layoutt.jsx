@@ -1,16 +1,17 @@
-import { Sidebar } from 'lucide-react'
+
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import Sidebarr from '../components/Sidebarr'
 
-const Layout = () => {
+const Layoutt = () => {
   return (
     <div>
       
-        <Sidebar/> 
+        {/* <Sidebarr/>  */}
    
         <Outlet /> 
     </div>
   )
 }
 
-export default Layout
+export default Layoutt
