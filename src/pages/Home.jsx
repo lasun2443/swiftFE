@@ -3,19 +3,27 @@
 import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, Search as SearchIcon, Play, Pause } from "lucide-react";
+import {
+  Menu,
+  X,
+  Search as SearchIcon,
+  Play,
+  Pause,
+  HeartOff,
+  Heart,
+} from "lucide-react";
+import FeaturedArtist from "../components/FeaturedArtist";
+import Trending from "../components/Trending";
 // import { logout } from "../redux/authSlice";
 
 export default function Home() {
   const navigate = useNavigate();
 
-
-
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileSearch, setMobileSearch] = useState("");
 
-let user = localStorage.getItem("user");
-user = user ? JSON.parse(user) : null;
+  let user = localStorage.getItem("user");
+  user = user ? JSON.parse(user) : null;
 
   // Demo data - replace with real data from API later
   const localSongs = [
@@ -23,50 +31,46 @@ user = user ? JSON.parse(user) : null;
       id: 1,
       title: "Calm Down",
       artist: "Rema",
-      cover: "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
-      duration: "3:45"
+      cover:
+        "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
+      duration: "3:45",
     },
     {
       id: 2,
       title: "Calm Down",
       artist: "Rema",
-      cover: "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
-      duration: "3:45"
+      cover:
+        "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
+      duration: "3:45",
     },
     {
       id: 3,
       title: "Calm Down",
       artist: "Rema",
-      cover: "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
-      duration: "3:45"
+      cover:
+        "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
+      duration: "3:45",
     },
     {
       id: 4,
       title: "Calm Down",
       artist: "Rema",
-      cover: "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
-      duration: "3:45"
+      cover:
+        "https://res.cloudinary.com/dtj1k9kka/image/upload/v1761742903/music-app/images/l6otyw8mggq7zjpknoqs.jpg",
+      duration: "3:45",
     },
   ];
 
-  const localArtists = [
-    { id: 1, name: "Rema", image: "https://via.placeholder.com/150", followers: "1.2M" },
-    { id: 2, name: "Burna Boy", image: "https://via.placeholder.com/150", followers: "2.5M" },
-    { id: 3, name: "Wizkid", image: "https://via.placeholder.com/150", followers: "3.1M" },
-    { id: 4, name: "Davido", image: "https://via.placeholder.com/150", followers: "2.8M" },
-    { id: 5, name: "Tems", image: "https://via.placeholder.com/150", followers: "890K" },
-  ];
-
-  const localAlbums = [
-    { id: 1, title: "Rave & Roses", artist: "Rema", cover: "https://via.placeholder.com/200", year: "2022" },
-    { id: 2, title: "Made in Lagos", artist: "Wizkid", cover: "https://via.placeholder.com/200", year: "2020" },
-    { id: 3, title: "Twice as Tall", artist: "Burna Boy", cover: "https://via.placeholder.com/200", year: "2020" },
-    { id: 4, title: "Timeless", artist: "Davido", cover: "https://via.placeholder.com/200", year: "2023" },
-    { id: 5, title: "For Broken Ears", artist: "Tems", cover: "https://via.placeholder.com/200", year: "2020" },
-  ];
-
+ 
   const genres = [
-    "Afrobeats", "Hip Hop", "R&B", "Pop", "Reggae", "Dancehall", "Amapiano", "Gospel"
+    "Afrobeats",
+    "Hip Hop",
+    "R&B",
+    "Pop",
+    "Reggae",
+    "Dancehall",
+    "Amapiano",
+    "Gospel",
   ];
 
   const handleLogout = () => {
@@ -77,7 +81,7 @@ user = user ? JSON.parse(user) : null;
   const handleMobileSearch = (e) => {
     e.preventDefault();
     setMenuOpen(false);
-    
+
     if (mobileSearch.trim()) {
       navigate(`/search?q=${encodeURIComponent(mobileSearch.trim())}`);
       setMobileSearch("");
@@ -109,7 +113,7 @@ user = user ? JSON.parse(user) : null;
         >
           Library
         </Link>
-        
+
         {/* Desktop Search */}
         <form
           onSubmit={(e) => {
@@ -129,7 +133,7 @@ user = user ? JSON.parse(user) : null;
           </div>
         </form>
 
-        { user ? (
+        {user ? (
           <div className="flex items-center gap-3">
             <Link
               to="/profile"
@@ -218,7 +222,7 @@ user = user ? JSON.parse(user) : null;
           </form>
 
           <div className="border-t border-zinc-700 pt-3 mt-2">
-            { user ? (
+            {user ? (
               <>
                 <Link
                   to="/profile"
@@ -269,7 +273,7 @@ user = user ? JSON.parse(user) : null;
         {/* Hero Section */}
         <section className="mb-10 bg-gradient-to-r from-green-900/20 to-zinc-900/20 rounded-xl p-6 sm:p-8 border border-zinc-800">
           <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-            Welcome to SwiftBeats{user ? `, ${user.name}` : ''}!
+            Welcome to SwiftBeats{user ? `, ${user.name}` : ""}!
           </h1>
           <p className="text-gray-400 text-sm sm:text-base">
             Discover and stream millions of songs from your favorite artists
@@ -277,40 +281,19 @@ user = user ? JSON.parse(user) : null;
         </section>
 
         {/* Featured Artists */}
-        <section className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Featured Artists</h2>
-            <Link to="/artists" className="text-sm text-green-400 hover:text-green-300">
-              See all
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {localArtists.map((artist) => (
-              <ArtistCard key={artist.id} artist={artist} />
-            ))}
-          </div>
-        </section>
-
+        
+        <FeaturedArtist/>
         {/* Trending Albums */}
-        <section className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Trending Albums</h2>
-            <Link to="/albums" className="text-sm text-green-400 hover:text-green-300">
-              See all
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {localAlbums.map((album) => (
-              <AlbumCard key={album.id} album={album} />
-            ))}
-          </div>
-        </section>
+        <Trending/>
 
         {/* Popular Songs */}
         <section className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold">Popular Songs</h2>
-            <Link to="/songs" className="text-sm text-green-400 hover:text-green-300">
+            <Link
+              to="/songs"
+              className="text-sm text-green-400 hover:text-green-300"
+            >
               See all
             </Link>
           </div>
@@ -338,52 +321,15 @@ user = user ? JSON.parse(user) : null;
 }
 
 // Artist Card Component
-function ArtistCard({ artist }) {
-  return (
-    <div className="group cursor-pointer">
-      <div className="relative aspect-square rounded-full overflow-hidden mb-3 bg-zinc-800">
-        <img
-          src={artist.image}
-          alt={artist.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <button className="bg-green-500 rounded-full p-3 transform scale-0 group-hover:scale-100 transition-transform">
-            <Play className="w-5 h-5 text-white fill-white" />
-          </button>
-        </div>
-      </div>
-      <h3 className="font-semibold text-sm sm:text-base truncate">{artist.name}</h3>
-      <p className="text-xs text-gray-400">{artist.followers} followers</p>
-    </div>
-  );
-}
+
 
 // Album Card Component
-function AlbumCard({ album }) {
-  return (
-    <div className="group cursor-pointer">
-      <div className="relative aspect-square rounded-lg overflow-hidden mb-3 bg-zinc-800">
-        <img
-          src={album.cover}
-          alt={album.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <button className="bg-green-500 rounded-full p-3 transform scale-0 group-hover:scale-100 transition-transform">
-            <Play className="w-5 h-5 text-white fill-white" />
-          </button>
-        </div>
-      </div>
-      <h3 className="font-semibold text-sm sm:text-base truncate">{album.title}</h3>
-      <p className="text-xs text-gray-400">{album.artist} • {album.year}</p>
-    </div>
-  );
-}
+
 
 // Song Card Component
 function SongCard({ title, artist, cover, duration }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   return (
     <div className="group cursor-pointer bg-zinc-900 rounded-lg p-3 hover:bg-zinc-800 transition-all">
@@ -393,9 +339,14 @@ function SongCard({ title, artist, cover, duration }) {
           alt={title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
         />
+
+        {/* Play/Pause Button */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
           <button
-            onClick={() => setIsPlaying(!isPlaying)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsPlaying(!isPlaying);
+            }}
             className="bg-green-500 rounded-full p-3 transform scale-0 group-hover:scale-100 transition-transform hover:bg-green-600"
           >
             {isPlaying ? (
@@ -405,7 +356,23 @@ function SongCard({ title, artist, cover, duration }) {
             )}
           </button>
         </div>
+
+        {/* Like Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setLiked(!liked);
+          }}
+          className="absolute top-2 right-2 bg-black/60 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+        >
+          {liked ? (
+            <Heart className="fill-red-500 text-red-500" size={16} />
+          ) : (
+            <HeartOff className="text-white" size={16} />
+          )}
+        </button>
       </div>
+
       <h3 className="font-semibold text-sm truncate">{title}</h3>
       <div className="flex items-center justify-between mt-1">
         <p className="text-xs text-gray-400 truncate flex-1">{artist}</p>

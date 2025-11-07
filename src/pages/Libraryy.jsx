@@ -37,7 +37,7 @@ export default function Lib() {
         );
 
         console.log("API Response Data:", response.data);
-        setPlaylists(response.data.playlists || []); // Use optional chaining or fallback array
+        setPlaylists(response.data.playlists || []); 
         setIsLoading(false);
       } catch (error) {
         console.error(
