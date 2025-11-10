@@ -23,8 +23,8 @@ const App = () => {
 
 
       <Route element={<AuthGuard isAuthenticated={isAuthenticated}/>} >
-      <Route path="/" element={<Navigate to={'/home'}/>} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Navigate to={'/'}/>} />
         <Route path="/lib" element={<Lib />} />
         <Route path="/album/:id" element={<AlbumPage />} />
       </Route>
