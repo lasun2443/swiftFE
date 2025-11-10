@@ -8,6 +8,8 @@ import Lib from "./pages/Libraryy";
 import Layoutt from "./pages/Layoutt";
 import AlbumPage from "./pages/AlbumPage";
 import AuthGuard from "./Auth/Auth";
+import SignupUI from "./pages/SignUp";
+import VerifyEmailUI from "./pages/VerifyEmail";
 
 const App = () => {
   let user = localStorage.getItem("user");
@@ -16,6 +18,9 @@ const App = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<SignupUI />} />
+      <Route path="/verify" element={<VerifyEmailUI />} />
+
 
       <Route element={<AuthGuard isAuthenticated={isAuthenticated}/>} >
       <Route path="/" element={<Navigate to={'/home'}/>} />
