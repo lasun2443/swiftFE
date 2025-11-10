@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import Lib from "./pages/Libraryy";
 import Layoutt from "./pages/Layoutt";
+import AlbumPage from "./pages/AlbumPage";
 
 const App = () => {
   let user = localStorage.getItem("user");
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/lib" element={<Lib />} />
       </Route>
+      <Route path="/album/:id" element={<AlbumPage />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

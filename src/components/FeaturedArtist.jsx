@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import ArtistCard from './ArtistCard';
 import axios from 'axios';
 const FeaturedArtist = () => {
   const [artistt, setartistt] = useState([])
   let token = localStorage.getItem("accessToken")
+  let navigate =useNavigate()
   useEffect(() => {
     const fetchFeatured=async()=>{
       try {
@@ -18,6 +19,9 @@ const FeaturedArtist = () => {
       if(response.data.success){
         let data = response.data.data
         setartistt(data)
+      }
+      else if(response.status==400){
+        navigate('/login')
       }
       } catch (error) {
         console.log(error)

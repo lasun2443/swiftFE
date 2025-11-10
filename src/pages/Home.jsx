@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import FeaturedArtist from "../components/FeaturedArtist";
 import Trending from "../components/Trending";
+import SongsSection from "../components/SongSection";
+import PopularSongs from "../components/PopularSongs";
 // import { logout } from "../redux/authSlice";
 
 export default function Home() {
@@ -287,18 +289,7 @@ export default function Home() {
         <Trending/>
 
         {/* Popular Songs */}
-        <section className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Popular Songs</h2>
-            <Link
-              to="/songs"
-              className="text-sm text-green-400 hover:text-green-300"
-            >
-              See all
-            </Link>
-          </div>
-          <SongsSection songs={localSongs} />
-        </section>
+       <PopularSongs/>
 
         {/* Browse by Genre */}
         <section>
@@ -383,28 +374,28 @@ function SongCard({ title, artist, cover, duration }) {
 }
 
 // Songs Section with Show More/Less
-function SongsSection({ songs }) {
-  const [showAll, setShowAll] = useState(false);
-  const visibleSongs = showAll ? songs : songs.slice(0, 4);
+// function SongsSection({ songs }) {
+//   const [showAll, setShowAll] = useState(false);
+//   const visibleSongs = showAll ? songs : songs.slice(0, 4);
 
-  return (
-    <div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-        {visibleSongs.map((song) => (
-          <SongCard key={song.id} {...song} />
-        ))}
-      </div>
+//   return (
+//     <div>
+//       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+//         {visibleSongs.map((song) => (
+//           <SongCard key={song.id} {...song} />
+//         ))}
+//       </div>
 
-      {songs.length > 4 && (
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="text-green-500 border border-green-500 px-6 py-2 rounded-full hover:bg-green-600 hover:text-white transition-all text-sm font-medium"
-          >
-            {showAll ? "Show Less" : "Show More"}
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
+//       {songs.length > 4 && (
+//         <div className="flex justify-center mt-6">
+//           <button
+//             onClick={() => setShowAll(!showAll)}
+//             className="text-green-500 border border-green-500 px-6 py-2 rounded-full hover:bg-green-600 hover:text-white transition-all text-sm font-medium"
+//           >
+//             {showAll ? "Show Less" : "Show More"}
+//           </button>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }

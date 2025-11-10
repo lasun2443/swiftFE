@@ -18,6 +18,7 @@ const Trending = () => {
       })
       if(response.data.success){
         let data = response.data.data
+        console.log(data)
         setalbums(data)
       }
       } catch (error) {
