@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 // import { Layout } from "lucide-react";
@@ -18,6 +18,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
 
       <Route element={<AuthGuard isAuthenticated={isAuthenticated}/>} >
+      <Route path="/" element={<Navigate to={'/home'}/>} />
         <Route path="/home" element={<Home />} />
         <Route path="/lib" element={<Lib />} />
         <Route path="/album/:id" element={<AlbumPage />} />
