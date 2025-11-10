@@ -7,20 +7,21 @@ import Home from "./pages/Home";
 import Lib from "./pages/Libraryy";
 import Layoutt from "./pages/Layoutt";
 import AlbumPage from "./pages/AlbumPage";
+import AuthGuard from "./Auth/Auth";
 
 const App = () => {
   let user = localStorage.getItem("user");
+  const isAuthenticated = localStorage.getItem("accessToken");
 
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Home />} />
 
-      <Route path="/" element={<Layoutt/>}>
+      <Route element={<AuthGuard isAuthenticated={isAuthenticated}/>} >
         <Route path="/home" element={<Home />} />
         <Route path="/lib" element={<Lib />} />
+        <Route path="/album/:id" element={<AlbumPage />} />
       </Route>
-      <Route path="/album/:id" element={<AlbumPage />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

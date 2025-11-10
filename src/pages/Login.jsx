@@ -38,7 +38,7 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(res.data.data.user));
             setIsLoading(false);
          
-          navigate('/');
+          navigate('/home');
         }
         } catch (error) {
             console.error("Login error:", error);
