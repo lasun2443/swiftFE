@@ -39,7 +39,7 @@ function AlbumCard({ album }) {
         {album.title}
       </h3>
       <p className="text-xs text-gray-400">
-        {album.artistName} • {new Date(album.releaseDate).getFullYear()}
+        {album.artistId?.artistName} • {new Date(album.releaseDate).getFullYear()}
       </p>
       <p className="text-xs text-gray-500 mt-1">
         {album.totalTracks} tracks • {album.formattedDuration}

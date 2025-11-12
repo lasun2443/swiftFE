@@ -8,16 +8,24 @@ const SongSection = ({ songs }) => {
     return (
       <div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-          {visibleSongs.map((song) => (
-            <SongCard 
-              key={song.id} 
-              title={song.title}
-              artist={song.artist}
-              cover={song.coverImage.url}
-              duration={song.audioFile.duration}
-              audioUrl={song.audioFile.url}
-            />
-          ))}
+          {visibleSongs.map((song) => {
+            const artistName =
+              song.artistId?.artistName ||
+              song.artistName ||
+              (typeof song.artist === "string" ? song.artist : "Unknown artist");
+
+            return (
+              <SongCard
+                key={song.id ?? song.audioFile?.url}
+                id={song.id ?? song.audioFile?.url}
+                title={song.title ?? "Untitled track"}
+                artist={artistName}
+                cover={song.coverImage?.url || song.albumArtUrl || ""}
+                duration={song.audioFile?.duration}
+                audioUrl={song.audioFile?.url}
+              />
+            );
+          })}
         </div>
   
         {songs.length > 4 && (

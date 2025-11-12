@@ -1,57 +1,44 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Heart, HeartOff } from 'lucide-react'; 
+import React, { useMemo, useState } from "react";
+import { Play, Pause, Heart, HeartOff } from "lucide-react";
+import { usePlayer } from "../context/PlayerContext.jsx";
 
-function SongCard({ title, artist, cover, duration, audioUrl }) {
-  const [isPlaying, setIsPlaying] = useState(false);
+function SongCard({ id, title, artist, cover, duration, audioUrl }) {
   const [liked, setLiked] = useState(false);
-  const audioRef = useRef(null);
+  const { currentTrack, isPlaying, playTrack, pause, resume } = usePlayer();
+
+  const isCurrentTrack = currentTrack?.id === id;
+  const isCurrentTrackPlaying = isCurrentTrack && isPlaying;
 
   // Format duration from seconds to MM:SS
-  const formatDuration = (seconds) => {
-    if (!seconds || isNaN(seconds)) return "0:00";
-    
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+  const formattedDuration = useMemo(() => {
+    if (!duration || Number.isNaN(duration)) return "0:00";
 
-  // Handle play/pause
-  const togglePlayPause = () => {
-    if (!audioRef.current) return;
+    const mins = Math.floor(duration / 60);
+    const secs = Math.floor(duration % 60);
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  }, [duration]);
 
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+  const handleToggle = (event) => {
+    event.stopPropagation();
+
+    if (!audioUrl) {
+      console.warn("Track does not have an audioUrl");
+      return;
     }
-    setIsPlaying(!isPlaying);
+
+    if (isCurrentTrack) {
+      if (isPlaying) {
+        pause();
+      } else {
+        resume();
+      }
+    } else {
+      playTrack({ id, title, artist, cover, duration, audioUrl });
+    }
   };
-
-  // Handle audio ended
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleEnded = () => {
-      setIsPlaying(false);
-    };
-
-    audio.addEventListener('ended', handleEnded);
-    
-    return () => {
-      audio.removeEventListener('ended', handleEnded);
-    };
-  }, []);
 
   return (
     <div className="group cursor-pointer bg-zinc-900 rounded-lg p-3 hover:bg-zinc-800 transition-all">
-      {/* Hidden audio element */}
-      <audio
-        ref={audioRef}
-        src={audioUrl}
-        preload="metadata"
-      />
-      
       <div className="relative aspect-square rounded-md overflow-hidden mb-3 bg-zinc-800">
         <img
           src={cover}
@@ -62,13 +49,10 @@ function SongCard({ title, artist, cover, duration, audioUrl }) {
         {/* Play/Pause Button */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              togglePlayPause();
-            }}
+            onClick={handleToggle}
             className="bg-green-500 rounded-full p-3 transform scale-0 group-hover:scale-100 transition-transform hover:bg-green-600"
           >
-            {isPlaying ? (
+            {isCurrentTrackPlaying ? (
               <Pause className="w-5 h-5 text-white fill-white" />
             ) : (
               <Play className="w-5 h-5 text-white fill-white" />
@@ -95,8 +79,14 @@ function SongCard({ title, artist, cover, duration, audioUrl }) {
       <h3 className="font-semibold text-sm truncate">{title}</h3>
       <div className="flex items-center justify-between mt-1">
         <p className="text-xs text-gray-400 truncate flex-1">{artist}</p>
-        <p className="text-xs text-gray-500">{formatDuration(duration)}</p>
+        <p className="text-xs text-gray-500">{formattedDuration}</p>
       </div>
+
+      {isCurrentTrack && (
+        <div className="mt-2 rounded bg-green-500/10 text-green-400 text-[11px] font-medium py-1 px-2 inline-flex items-center gap-1">
+          {isCurrentTrackPlaying ? "Playing" : "Paused"}
+        </div>
+      )}
     </div>
   );
 }

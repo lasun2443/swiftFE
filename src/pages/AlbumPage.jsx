@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Play, Pause, Shuffle, Heart, MoreHorizontal, ArrowLeft } from 'lucide-react';
+import { Play, Shuffle, Heart, MoreHorizontal, ArrowLeft } from 'lucide-react';
+import { usePlayer } from '../context/PlayerContext.jsx';
 
 function AlbumPage() {
   const { id } = useParams();
@@ -9,9 +10,7 @@ function AlbumPage() {
   const [album, setAlbum] = useState(null);
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPlaying, setCurrentPlaying] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+  const { currentTrack, isPlaying, playTrack, pause, resume } = usePlayer();
 
   useEffect(() => {
     const fetchAlbumData = async () => {
@@ -57,48 +56,40 @@ function AlbumPage() {
     return sentences;
   };
 
+  const playSong = (song) => {
+    if (!song?.audioFile?.url) {
+      console.warn('Song is missing an audio url');
+      return;
+    }
+
+    playTrack({
+      id: song.id,
+      title: song.title,
+      artist: album.artistId?.artistName,
+      cover: album?.coverImage?.url,
+      duration: song.audioFile?.duration,
+      audioUrl: song.audioFile?.url,
+    });
+  };
+
   const handlePlayAlbum = () => {
     if (songs.length > 0) {
-      // Play the first song in the album
       playSong(songs[0]);
     }
   };
 
   const handlePlaySong = (song) => {
-    if (currentPlaying?.id === song.id && isPlaying) {
+    if (!song) return;
 
-      audioRef.current.pause();
-      setIsPlaying(false);
+    if (currentTrack?.id === song.id) {
+      if (isPlaying) {
+        pause();
+      } else {
+        resume();
+      }
     } else {
- 
       playSong(song);
     }
-  };
-
-  const playSong = (song) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-
-
-    const audio = new Audio(song.audioFile?.url);
-    audioRef.current = audio;
-    
-    audio.play().then(() => {
-      setCurrentPlaying(song);
-      setIsPlaying(true);
-    }).catch(error => {
-      console.error('Error playing song:', error);
-    });
-
-    audio.addEventListener('ended', () => {
-      setIsPlaying(false);
-      setCurrentPlaying(null);
-    });
-
-    audio.addEventListener('pause', () => {
-      setIsPlaying(false);
-    });
   };
 
   const handleShuffle = () => {
@@ -155,7 +146,7 @@ function AlbumPage() {
       <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-end mb-8">
         <div className="w-48 h-48 md:w-60 md:h-60 flex-shrink-0">
           <img
-            src={album.coverImage.url}
+            src={album.coverImage?.url}
             alt={album.title}
             className="w-full h-full object-cover rounded-lg shadow-2xl"
           />
@@ -169,11 +160,11 @@ function AlbumPage() {
             {album.profilePicture?.url && (
               <img
                 src={album.profilePicture.url}
-                alt={album.artistName}
+                alt={album.artistId?.artistName}
                 className="w-6 h-6 rounded-full mr-2"
               />
             )}
-            <span className="font-semibold">{album.artistName}</span>
+            <span className="font-semibold">{album.artistId?.artistName}</span>
             <span className="mx-2">•</span>
             <span>{new Date(album.releaseDate).getFullYear()}</span>
             <span className="mx-2">•</span>
@@ -210,11 +201,11 @@ function AlbumPage() {
       </div>
 
  
-      {album.artistId.bio&& (
+      {album.artistId?.bio && (
         <div className="mb-8 p-6 bg-zinc-800 rounded-lg">
-          <h3 className="text-xl font-bold mb-4">About {album.artistId.artistName}</h3>
+          <h3 className="text-xl font-bold mb-4">About {album.artistId?.artistName}</h3>
           <div className="space-y-3 text-gray-300">
-            {formatBio(album.artistId.bio).map((paragraph, index) => (
+            {formatBio(album.artistId?.bio).map((paragraph, index) => (
               <p key={index} className="leading-relaxed">
                 {paragraph}
               </p>
@@ -230,7 +221,7 @@ function AlbumPage() {
         {songs.length > 0 ? (
           <div className="space-y-1">
             {songs.map((song, index) => {
-              const isCurrentSong = currentPlaying?.id === song.id;
+              const isCurrentSong = currentTrack?.id === song.id;
               const isSongPlaying = isCurrentSong && isPlaying;
               
               return (
@@ -264,7 +255,7 @@ function AlbumPage() {
                     <h3 className={`font-medium ${isCurrentSong ? 'text-green-500' : 'text-white'}`}>
                       {song.title}
                     </h3>
-                    <p className="text-sm text-gray-400">{album.artistName}</p>
+                    <p className="text-sm text-gray-400">{album.artistId?.artistName}</p>
                   </div>
                   
                   <div className="text-sm text-gray-400">
