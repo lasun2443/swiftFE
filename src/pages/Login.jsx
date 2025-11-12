@@ -36,9 +36,9 @@ const Login = () => {
 
             localStorage.setItem('accessToken', res.data.data.accessToken);
             localStorage.setItem('user', JSON.stringify(res.data.data.user));
+            navigate('/home');
             setIsLoading(false);
          
-          navigate('/home');
         }
         } catch (error) {
             console.error("Login error:", error);
